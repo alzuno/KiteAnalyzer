@@ -2,7 +2,7 @@
 
 Dashboard de Streamlit para analizar flotas de SIMs IoT desde la plataforma Kite de Telefonica. Procesa reportes CSV de facturacion mensual, los almacena en DuckDB y ofrece recomendaciones de optimizacion de costos.
 
-**Version actual: 2.3.1**
+**Version actual: 2.4.0**
 
 ## Caracteristicas
 
@@ -71,8 +71,8 @@ El nombre del archivo determina el pais y la empresa. Los patrones se configuran
 
 ```json
 [
-  { "pattern": "eu_location", "country": "Spain", "company": "Movistar" },
-  { "pattern": "location_world_demo", "country": "Ecuador", "company": "Ztech" }
+  { "pattern": "company_spain", "kite": "CompanyA - España" },
+  { "pattern": "company_ecuador", "kite": "CompanyB - Ecuador" }
 ]
 ```
 
@@ -80,7 +80,7 @@ Para agregar un nuevo pais basta con añadir una entrada al JSON — no es neces
 
 Los patrones se evalúan en orden (case-insensitive); el primero que coincide con el nombre del archivo gana. Si ninguno coincide se asigna `Unknown`.
 
-Ejemplo: `MonthlySubscriptionDetail_EU_Location_World1771f0368d6VtF9_0_20260131.0.csv`
+Ejemplo: `MonthlySubscriptionDetail_company_spain_abc123_0_20260131.0.csv`
 
 ### Columnas del CSV
 

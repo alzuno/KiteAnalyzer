@@ -5,6 +5,19 @@ Todos los cambios notables de este proyecto se documentan en este archivo.
 El formato esta basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
+## [2.4.0] - 2026-02-22
+
+### Agregado
+- Panel de Control: "Evolución de Costos por Kite" (line chart por mes/kite) reemplaza el pie chart estático
+- Panel de Control: "Uso Total (MB) por Kite" ahora muestra barras apiladas por mes con desagregación temporal
+- Panel de Control: KPIs de optimización (conteo de SIMs Zombie y Over-Quota)
+- Panel de Control: gráfico de barras apiladas "Costo por Tipo" (Cuota mensual vs Excedente) por Kite/mes
+
+### Cambiado
+- `config/country_mapping.json`: campo `country` renombrado a `kite`, campo `company` eliminado
+- Valores de ejemplo en `country_mapping.json` reemplazados por nombres genéricos (CompanyA–E)
+- Documentación (README.md, CLAUDE.md): eliminadas referencias a nombres reales de clientes
+
 ## [2.3.1] - 2026-02-22
 
 ### Corregido

@@ -53,16 +53,13 @@ class KiteParser:
         else:
             filename = os.path.basename(str(file_path)).lower()
         
-        company = "Unknown"
         kite = "Unknown"
 
         for entry in _COUNTRY_MAPPING:
             if entry["pattern"].lower() in filename:
-                kite = entry["country"]
-                company = entry["company"]
+                kite = entry["kite"]
                 break
 
-        df['company'] = company
         df['kite'] = kite
         df['currency'] = currency
         

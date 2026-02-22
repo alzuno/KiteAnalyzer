@@ -163,25 +163,58 @@ elif menu == "Panel de Control":
         c1, c2 = st.columns(2)
 
         with c1:
-            st.subheader("Distribución de Costos por Kite")
+            st.subheader("Evolución de Costos por Kite")
             if selected_currency:
-                cost_by_kite = analysis.groupby('kite')['total_monthly_cost'].sum().reset_index()
-                fig_cost = px.pie(cost_by_kite, values='total_monthly_cost', names='kite', hole=0.4,
-                                 color_discrete_sequence=px.colors.qualitative.Pastel)
-                fig_cost.update_traces(texttemplate='%{percent:.2%}',
-                                       hovertemplate=f'%{{label}}<br>%{{value:,.2f}} {selected_currency}<br>%{{percent:.2%}}')
+                cost_kite = analysis.groupby(['month', 'kite'])['total_monthly_cost'].sum().reset_index()
+                fig_cost = px.line(cost_kite, x='month', y='total_monthly_cost', color='kite',
+                                   markers=True,
+                                   labels={'total_monthly_cost': f'Costo ({selected_currency})', 'month': 'Mes', 'kite': 'Kite'},
+                                   color_discrete_sequence=px.colors.qualitative.Pastel)
                 st.plotly_chart(fig_cost, width='stretch')
 
         with c2:
             st.subheader("Uso Total (MB) por Kite")
             if selected_currency:
-                usage_kite = analysis.groupby('kite')['usage_bytes'].sum().reset_index()
+                usage_kite = analysis.groupby(['month', 'kite'])['usage_bytes'].sum().reset_index()
                 usage_kite['MB'] = usage_kite['usage_bytes'] / (1024 * 1024)
-                fig_usage = px.bar(usage_kite, x='kite', y='MB', color='kite',
-                                  labels={'MB': 'Megabytes', 'kite': 'Kite'},
+                fig_usage = px.bar(usage_kite, x='month', y='MB', color='kite', barmode='stack',
+                                  labels={'MB': 'Megabytes', 'month': 'Mes', 'kite': 'Kite'},
                                   color_discrete_sequence=px.colors.qualitative.Safe)
-                fig_usage.update_traces(hovertemplate='Kite: %{x}<br>Consumo: %{y:,.2f} MB')
                 st.plotly_chart(fig_usage, width='stretch')
+
+        st.markdown("---")
+
+        # Optimization KPIs and cost breakdown
+        zombie_iccs = analysis.groupby('ICC').filter(lambda g: (g['usage_bytes'] == 0).all())['ICC'].unique()
+        overquota_iccs = analysis[(analysis['quota_bytes'] > 0) & (analysis['usage_bytes'] > analysis['quota_bytes'])]['ICC'].unique()
+
+        kcol1, kcol2 = st.columns(2)
+        kcol1.metric("SIMs Zombie", len(zombie_iccs), help="SIMs con 0 consumo en todos sus meses registrados")
+        kcol2.metric("SIMs Over-Quota", len(overquota_iccs), help="SIMs que superaron su cuota en al menos 1 mes")
+
+        if selected_currency:
+            st.subheader("Costo por Tipo (Cuota vs Excedente) por Kite")
+            cost_type = analysis.groupby(['month', 'kite']).agg(
+                monthly_fee=('monthly_fee', 'sum'),
+                overage_cost=('overage_cost', 'sum')
+            ).reset_index()
+            cost_type_melted = cost_type.melt(
+                id_vars=['month', 'kite'],
+                value_vars=['monthly_fee', 'overage_cost'],
+                var_name='tipo', value_name='costo'
+            )
+            cost_type_melted['tipo'] = cost_type_melted['tipo'].map({
+                'monthly_fee': 'Cuota mensual',
+                'overage_cost': 'Excedente'
+            })
+            fig_cost_type = px.bar(
+                cost_type_melted, x='month', y='costo', color='tipo',
+                facet_col='kite', barmode='stack',
+                labels={'costo': f'Costo ({selected_currency})', 'month': 'Mes', 'tipo': 'Tipo', 'kite': 'Kite'},
+                color_discrete_map={'Cuota mensual': '#636EFA', 'Excedente': '#EF553B'}
+            )
+            fig_cost_type.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+            st.plotly_chart(fig_cost_type, width='stretch')
 
 elif menu == "Optimización":
     st.title("💡 Recomendaciones de Optimización")

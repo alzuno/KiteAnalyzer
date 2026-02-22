@@ -16,7 +16,7 @@ KiteAnalyzer is a Streamlit dashboard for analyzing IoT SIM card fleet data from
 ## Architecture
 
 - `app.py` — Single-file Streamlit app with 4 views: Panel de Control (dashboard), Cargar Reportes (upload), Optimización (optimization recommendations), Análisis de Tendencias (trends)
-- `utils/parser.py` — `KiteParser`: parses semicolon-delimited Kite CSVs, cleans Excel-style `="value"` formatting, detects currency from headers, infers country/company from filename patterns
+- `utils/parser.py` — `KiteParser`: parses semicolon-delimited Kite CSVs, cleans Excel-style `="value"` formatting, detects currency from headers, infers kite label from filename patterns
 - `utils/database.py` — `KiteDatabase`: DuckDB wrapper (`kite_data.db`), handles CRUD for the single `reports` table
 - `scripts/bulk_import.py` — CLI script to bulk-import CSVs from `Files/` directory
 
@@ -32,5 +32,5 @@ KiteAnalyzer is a Streamlit dashboard for analyzing IoT SIM card fleet data from
 ## Conventions
 
 - UI language is Spanish
-- Country detection relies on filename substrings: `eu_location` → Spain, `location_world_demo` → Ecuador
+- Kite label detection relies on filename substrings configured in `config/country_mapping.json` (e.g. `company_spain` → "CompanyA - España")
 - CSV format: semicolon-separated, UTF-8 BOM, may contain `="value"` Excel quoting

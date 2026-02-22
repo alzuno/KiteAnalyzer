@@ -1,27 +1,22 @@
 [
   {
     "pattern": "eu_location",
-    "country": "España",
-    "company": "Misuriam"
+    "kite": "Misuriam - España"
   },
   {
     "pattern": "location_world_demo",
-    "country": "Ecuador",
-    "company": "Ztech"
+    "kite": "Ztech - Ecuador"
   },
   {
     "pattern": "nperu_locationworld",
-    "country": "Peru",
-    "company": "Location World Peru"
+    "kite": "LW - Peru"
   },
   {
     "pattern": "locations_world_arg",
-    "country": "Argentina",
-    "company": "Location World Argentina"
+    "kite": "LW - Argentina"
   },
   {
     "pattern": "zhungotech_s.a.s.",
-    "country": "Ecuador",
-    "company": "Location World Ecuador"
+    "kite": "LW - Ecuador"
   }
 ]
