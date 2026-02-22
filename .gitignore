@@ -1,0 +1,30 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Base de datos local
+*.db
+*.db-wal
+*.db-shm
+
+# Datos privados (CSVs de clientes)
+Files/
+
+# Variables de entorno
+.env
+.env.*
+
+# Proyecto
+To-Do.md
+
+# macOS
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
