@@ -110,6 +110,11 @@ class KiteParser:
 
         df['record_type'] = df['DESCRIPTION'].apply(classify_record)
 
+        # Normalize PERIOD_START and PERIOD_END to full timestamps
+        for col in ['PERIOD_START', 'PERIOD_END']:
+            if col in df.columns:
+                df[col] = pd.to_datetime(df[col], errors='coerce')
+
         return df
 
 if __name__ == "__main__":

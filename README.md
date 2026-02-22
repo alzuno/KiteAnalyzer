@@ -2,7 +2,7 @@
 
 Dashboard de Streamlit para analizar flotas de SIMs IoT desde la plataforma Kite de Telefonica. Procesa reportes CSV de facturacion mensual, los almacena en DuckDB y ofrece recomendaciones de optimizacion de costos.
 
-**Version actual: 2.3.0**
+**Version actual: 2.3.1**
 
 ## Caracteristicas
 
